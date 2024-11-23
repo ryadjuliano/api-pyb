@@ -1,0 +1,9 @@
+[16-Jun-2023 09:57:24 UTC] PHP Fatal error:  Cannot use empty array elements in arrays in /home/ehaj5884/public_html/api.obmloyalty.com/application/controllers/api/Transaction.php on line 179
+[16-Jun-2023 09:57:37 UTC] PHP Fatal error:  Cannot use empty array elements in arrays in /home/ehaj5884/public_html/api.obmloyalty.com/application/controllers/api/Transaction.php on line 179
+[16-Jun-2023 09:59:00 UTC] PHP Fatal error:  Cannot use empty array elements in arrays in /home/ehaj5884/public_html/api.obmloyalty.com/application/controllers/api/Transaction.php on line 179
+[16-Jun-2023 09:59:18 UTC] PHP Fatal error:  Cannot use empty array elements in arrays in /home/ehaj5884/public_html/api.obmloyalty.com/application/controllers/api/Transaction.php on line 179
+[16-Jun-2023 09:59:21 UTC] PHP Fatal error:  Cannot use empty array elements in arrays in /home/ehaj5884/public_html/api.obmloyalty.com/application/controllers/api/Transaction.php on line 179
+[16-Jun-2023 10:00:35 UTC] PHP Fatal error:  Cannot use empty array elements in arrays in /home/ehaj5884/public_html/api.obmloyalty.com/application/controllers/api/Transaction.php on line 179
+[16-Jun-2023 10:01:56 UTC] PHP Fatal error:  Cannot use empty array elements in arrays in /home/ehaj5884/public_html/api.obmloyalty.com/application/controllers/api/Transaction.php on line 166
+[16-Jun-2023 10:02:24 UTC] PHP Fatal error:  Cannot use empty array elements in arrays in /home/ehaj5884/public_html/api.obmloyalty.com/application/controllers/api/Transaction.php on line 166
+[18-Jun-2023 07:24:49 UTC] PHP Fatal error:  Cannot use [] for reading in /home/ehaj5884/public_html/api.obmloyalty.com/application/controllers/api/Tenant.php on line 78
