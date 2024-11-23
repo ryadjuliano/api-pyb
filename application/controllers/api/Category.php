@@ -9,7 +9,18 @@ require APPPATH . '/libraries/REST_Controller.php';
 // use namespace
 use Restserver\Libraries\REST_Controller;
 
-class Category extends REST_Controller {
+/**
+ * This is an example of a few basic user interaction methods you could use
+ * all done with a hardcoded array
+ *
+ * @package         CodeIgniter
+ * @subpackage      Rest Server
+ * @category        Controller
+ * @author          Phil Sturgeon, Chris Kacerguis
+ * @license         MIT
+ * @link            https://github.com/chriskacerguis/codeigniter-restserver
+ */
+class Tenant extends REST_Controller {
 
     function __construct()
     {
@@ -19,18 +30,20 @@ class Category extends REST_Controller {
          $this->load->database();
         // Configure limits on our controller methods
         // Ensure you have created the 'limits' table and enabled 'limits' within application/config/rest.php
-        $this->methods['list_get']['limit'] = 500; // 500 requests per hour per user/key
-        $this->methods['users_post']['limit'] = 100; // 100 requests per hour per user/key
-        $this->methods['users_delete']['limit'] = 50; // 50 requests per hour per user/key
+        // $this->methods['list_get']['limit'] = 500; // 500 requests per hour per user/key
+        // $this->methods['users_post']['limit'] = 100; // 100 requests per hour per user/key
+        // $this->methods['users_delete']['limit'] = 50; // 50 requests per hour per user/key
     }
 
     public function list_get()
     {
-        $tenant = $this->db->get('sim_group_category')->result();
-        // $this->response($kontak, 200);
+        $category = $this->db->get('sim_group_category')->result();
         $this->response($tenant, REST_Controller::HTTP_OK); 
         
     }
+    
+
+   
 
   
 
