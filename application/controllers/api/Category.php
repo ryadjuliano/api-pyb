@@ -30,15 +30,20 @@ class Category extends REST_Controller {
          $this->load->database();
         // Configure limits on our controller methods
         // Ensure you have created the 'limits' table and enabled 'limits' within application/config/rest.php
-        // $this->methods['list_get']['limit'] = 500; // 500 requests per hour per user/key
-        // $this->methods['users_post']['limit'] = 100; // 100 requests per hour per user/key
-        // $this->methods['users_delete']['limit'] = 50; // 50 requests per hour per user/key
+        $this->methods['list_get']['limit'] = 500; // 500 requests per hour per user/key
+        $this->methods['users_post']['limit'] = 100; // 100 requests per hour per user/key
+        $this->methods['users_delete']['limit'] = 50; // 50 requests per hour per user/key
     }
 
     public function list_get()
     {
-        $category = $this->db->get('sim_group_category')->result();
-        $this->response($category, REST_Controller::HTTP_OK); 
+        $category = $this->db->get('sim_group_category')->result(); 
+        $message = array(
+            "data" => $category,
+            "succes" => true
+            );
+            
+        $this->response($message, REST_Controller::HTTP_OK); 
         
     }
     
