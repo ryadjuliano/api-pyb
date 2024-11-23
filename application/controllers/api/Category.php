@@ -20,7 +20,7 @@ use Restserver\Libraries\REST_Controller;
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class Tenant extends REST_Controller {
+class Category extends REST_Controller {
 
     function __construct()
     {
@@ -38,7 +38,7 @@ class Tenant extends REST_Controller {
     public function list_get()
     {
         $category = $this->db->get('sim_group_category')->result();
-        $this->response($tenant, REST_Controller::HTTP_OK); 
+        $this->response($category, REST_Controller::HTTP_OK); 
         
     }
     
