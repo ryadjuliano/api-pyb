@@ -45,7 +45,7 @@ class Transaction extends REST_Controller {
                         company_id as bid")
                 ->from('sales')
                 ->join('users', 'users.id = sales.user', 'LEFT')
-                ->join('customers', 'customers.phone = sales.customer_phone', 'LEFT')
+                ->join('customers', 'customers.phone = users.customer_phone', 'LEFT')
                 ->group_by('sales.id');
 
             // Filter berdasarkan parameter
