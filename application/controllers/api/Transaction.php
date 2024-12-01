@@ -27,41 +27,47 @@ class Transaction extends REST_Controller {
     {
         
         $sales = $this->db
-            ->select("{$this->db->dbprefix('sales')}.id as sid, 
-                        date, 
-                        ballon_status, 
-                        company_name, 
-                        reference_no, 
-                        CONCAT({$this->db->dbprefix('users')}.first_name, ' ', {$this->db->dbprefix('users')}.last_name) as user, 
-                        customer_name, 
-                        grand_total, 
-                        paid, 
-                        (grand_total - COALESCE(paid, 0)) as balance, 
-                        customers.phone as telephone, 
-                        due_date, 
-                        status, 
-                        recurring, 
-                        {$this->db->dbprefix('sales')}.customer_id as cid, 
-                        company_id as bid")
-                ->from('sales')
-                ->join('users', 'users.id = sales.user', 'LEFT')
-                ->join('customers', 'customers.phone = users.phone', 'LEFT')
-                ->group_by('sales.id');
-
-            // Filter berdasarkan parameter
-            if ($customer_id) {
-                $this->db->where('sales.customer_id', $customer_id);
-            }
-
-            if ($check) {
-                $this->db->where('sales.user', $user_id);
-            }
-
-            // Eksekusi query
-            $result = $this->db->get()->result();
-
-            // Mengirimkan respons dalam format JSON
-            $this->response($result, REST_Controller::HTTP_OK);
+        ->select("{$this->db->dbprefix('sales')}.id as sid, 
+                    date, 
+                    ballon_status, 
+                    company_name, 
+                    reference_no, 
+                    CONCAT({$this->db->dbprefix('users')}.first_name, ' ', {$this->db->dbprefix('users')}.last_name) as user, 
+                    customer_name, 
+                    grand_total, 
+                    paid, 
+                    (grand_total - COALESCE(paid, 0)) as balance, 
+                    customers.phone as telephone, 
+                    due_date, 
+                    status, 
+                    recurring, 
+                    {$this->db->dbprefix('sales')}.customer_id as cid, 
+                    company_id as bid")
+        ->from('sales')
+        ->join('users', 'users.id = sales.user', 'LEFT')
+        ->join('customers', 'customers.phone = users.phone', 'LEFT')
+        ->group_by('sales.id');
+    
+    // Filter berdasarkan parameter
+    if ($customer_id) {
+        $this->db->where('sales.customer_id', $customer_id);
+    }
+    
+    if ($check) {
+        $this->db->where('sales.user', $user_id);
+    }
+    
+    // Tambahkan pengurutan berdasarkan tanggal terbaru
+    $this->db->order_by('sales.date', 'DESC'); // Mengurutkan berdasarkan tanggal (baru di atas)
+    
+    // Menambahkan limit
+    $this->db->limit(30); // Batasi hasil query (misalnya 5 data)
+    
+    // Eksekusi query
+    $result = $this->db->get()->result();
+    
+    // Mengirimkan respons dalam format JSON
+    $this->response($result, REST_Controller::HTTP_OK);    
     }
 
 }
