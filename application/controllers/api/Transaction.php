@@ -23,7 +23,7 @@ class Transaction extends REST_Controller {
         $this->methods['users_delete']['limit'] = 50; // 50 requests per hour per user/key
     }
 
-    public function index_get($customer_id = null, $check = false, $user_id = null)
+    public function allinvoice_get($customer_id = null, $check = false, $user_id = null)
     {
         
         $sales = $this->db
