@@ -81,7 +81,7 @@ $db['default'] = array(
     'password' => 'Pyb2023@!',
     'database' => 'iamx4325_invoice',
 	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
+	'dbprefix' => 'tec_',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
