@@ -33,17 +33,26 @@ class Customers extends REST_Controller {
         $q = $this->db->get();
         
         if ($q->num_rows() > 0) {
-            $data = $q->result(); // Directly fetch the result array
-            $message = array(
-                "data" => $data,
+            $result = [];
+            foreach ($q->result() as $row) {
+                $result[] = [
+                    'id' => $row->id,
+                    'name' => $row->name,
+                    'phone' => $row->phone,
+                    'addresses' => [$row->lokasi, $row->address]
+                ];
+            }
+
+            $message = [
+                "data" => $result,
                 "success" => true
-            );
+            ];
         } else {
-            $message = array(
+            $message = [
                 "data" => [],
                 "success" => false,
                 "message" => "No records found."
-            );
+            ];
         }
         
         $this->response($message, REST_Controller::HTTP_OK);
