@@ -26,25 +26,25 @@ class Customers extends REST_Controller {
 
     public function list_get()
     {
-        $this->db->select('sim_customers.address,sim_customers.cf1, sim_customers_details.phone, sim_customers_details.name,sim_customers_details.lokasi ');
+        $this->db->select('sim_customers.address, sim_customers.cf1, sim_customers_details.phone, sim_customers_details.name, sim_customers_details.lokasi');
         $this->db->from('sim_customers');
         $this->db->join('sim_customers_details', 'sim_customers.phone = sim_customers_details.phone'); // Adjust column names for joining
-        // $this->db->where('sim_customers.name', $name); // Filter by name from sim_customers
-        // $this->db->where('sim_customers_details.phone', $phone); // Filter by phone from sim_customers_details
         
         $q = $this->db->get();
         
         if ($q->num_rows() > 0) {
-            foreach (($q->result()) as $row) {
-                $data[] = $row;
-            }
-            return $data;
+            $data = $q->result(); // Directly fetch the result array
+            $message = array(
+                "data" => $data,
+                "success" => true
+            );
+        } else {
+            $message = array(
+                "data" => [],
+                "success" => false,
+                "message" => "No records found."
+            );
         }
-        
-        $message = array(
-            "data" => $q,
-            "success" => true
-        );
         
         $this->response($message, REST_Controller::HTTP_OK);
           
