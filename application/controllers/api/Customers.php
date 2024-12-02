@@ -36,7 +36,6 @@ class Customers extends REST_Controller {
             $result = [];
             foreach ($q->result() as $row) {
                 $result[] = [
-                    'id' => $row->id,
                     'name' => $row->name,
                     'phone' => $row->phone,
                     'addresses' => [$row->lokasi, $row->address]
