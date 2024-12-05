@@ -23,165 +23,51 @@ class Transaction extends REST_Controller {
         $this->methods['users_delete']['limit'] = 50; // 50 requests per hour per user/key
     }
 
-    public function point_get()
+    public function allinvoice_get($customer_id = null, $check = false, $user_id = null)
     {
-    //   $phone = $this->get('phone');
-    //     if (phone == '') {
-    //         // $tenant = $this->db->get('tbl_tenant')->result();
-    //          //         $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
-    //     } else {
-    //         $this->db->where('phone', $phone);
-    //         $tenant = $this->db->get('tbl_customers')->result();
-    //     }
         
-        // $this->db->where('status', 1);
-        // $voucher = $this->db
-        // ->limit('5')
-        // ->get('tbl_vouchers')->result();
-        // $this->response($voucher, REST_Controller::HTTP_OK); 
-        
-        
-         $voucher = $this->db
-            ->select('tbl_vouchers.*,tbl_category_vouchers.name as CategoryName ,tbl_tenant.name as NamaTenant')
-            ->from('tbl_vouchers')
-            ->join('tbl_category_vouchers','tbl_vouchers.category_voucher_id=tbl_category_vouchers.uid','LEFT')
-            ->join('tbl_tenant','tbl_vouchers.tenant_id=tbl_tenant.uid','LEFT')
-            ->limit('5')
-            ->where('tbl_vouchers.status', 1)
-            ->get()->result(); 
-            
-            $this->response($voucher, REST_Controller::HTTP_OK); 
-        
-        // if ($id === NULL)
-        // {
-        //     // Check if the users data store contains users (in case the database result returns NULL)
-        //     if ($users)
-        //     {
-        //         // Set the response and exit
-        //         $this->response($users, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
-        //     }
-        //     else
-        //     {
-        //         // Set the response and exit
-        //         $this->response([
-        //             'status' => FALSE,
-        //             'message' => 'No users were found'
-        //         ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
-        //     }
-        // }
-
-        // // Find and return a single record for a particular user.
-        // else {
-        //     $id = (int) $id;
-
-        //     // Validate the id.
-        //     if ($id <= 0)
-        //     {
-        //         // Invalid id, set the response and exit.
-        //         $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
-        //     }
-
-        //     // Get the user from the array, using the id as key for retrieval.
-        //     // Usually a model is to be used for this.
-
-        //     $user = NULL;
-
-        //     if (!empty($users))
-        //     {
-        //         foreach ($users as $key => $value)
-        //         {
-        //             if (isset($value['id']) && $value['id'] === $id)
-        //             {
-        //                 $user = $value;
-        //             }
-        //         }
-        //     }
-
-        //     if (!empty($user))
-        //     {
-        //         $this->set_response($user, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
-        //     }
-        //     else
-        //     {
-        //         $this->set_response([
-        //             'status' => FALSE,
-        //             'message' => 'User could not be found'
-        //         ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
-        //     }
-        // }
-    }
-
-    public function valuepoint_post()
-    {
+        $sales = $this->db
+        ->select("{$this->db->dbprefix('sales')}.id as sid, 
+                    date, 
+                    ballon_status, 
+                    company_name, 
+                    reference_no, 
+                    CONCAT({$this->db->dbprefix('users')}.first_name, ' ', {$this->db->dbprefix('users')}.last_name) as user, 
+                    customer_name, 
+                    grand_total, 
+                    paid, 
+                    (grand_total - COALESCE(paid, 0)) as balance, 
+                    customers.phone as telephone, 
+                    due_date, 
+                    status, 
+                    recurring, 
+                    {$this->db->dbprefix('sales')}.customer_id as cid, 
+                    company_id as bid")
+        ->from('sales')
+        ->join('users', 'users.id = sales.user', 'LEFT')
+        ->join('customers', 'customers.phone = users.phone', 'LEFT')
+        ->group_by('sales.id');
     
-        $userId =  $this->post('user_id');
-    
-        $this->db->where('user_id', $userId);
-        // $listCoupon = $this->db->get('tbl_coupon')->result();
-        
-         $valuePoint = $this->db
-            ->select('SUM(value_point) as PointValue')
-            ->from('tbl_transactions')
-            // ->join('tbl_events','tbl_coupon.event_id=tbl_events.uid','LEFT')
-            // ->join('tbl_category_tenant','tbl_coupon.category_id=tbl_category_tenant.uid','LEFT')
-            ->where('user_id',$userId)
-            ->get(); //Getting the results ready...
-      
-        // $quer = $this->db
-        //     ->select('count(*) as Total')
-        //     ->from('tbl_coupon')
-        //     // ->join('course_details','assign_tble.ccode=course_details.ccode','LEFT')
-        //     ->where('user_id',$userId)
-            
-        //     ->get(); //Getting the results ready...
-            
-            
-            // return 
-         $message = [
-            'value' => $valuePoint->result(),
-            // 'totalCoupon' => $quer->result(),
-            'message' => 'Sucessfully result'
-        ];
-        
-        $this->response($message, REST_Controller::HTTP_OK); 
+    // Filter berdasarkan parameter
+    if ($customer_id) {
+        $this->db->where('sales.customer_id', $customer_id);
     }
     
-    public function trxvoucher_post()
-    {
-    
-        $InsertArray = [
-                    'user_id' =>  $this->post('user_id'),
-                    'trx_type' =>  $this->post('trx_type'),
-                    'que_type' => $this->post('que_type'),
-                    'voucher_uid' =>  $this->post('voucher_uid'),
-                    'trx_amount' =>  $this->post('trx_amount'),
-                    'value_point' => $this->post('value_point'),
-                    'voucher_uid' =>  $this->post('voucher_uid'),
-                    'trx_code' => 'TRX-'.date('syimdh'),
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'created_by' => $this->post('isMode')
-            ];
-        //  $ins = $this->db('tbl_transactions')->insert($InsertArray);
-         $insert = $this->db->insert('tbl_transactions', $InsertArray);
-         $message = [
-            'status' => $insert,
-            'message' => 'Sucessfully Added data'
-        ];
-        
-        $this->response($message, REST_Controller::HTTP_OK); 
+    if ($check) {
+        $this->db->where('sales.user', $user_id);
     }
     
-    public function history_post()
-    {
+    // Tambahkan pengurutan berdasarkan tanggal terbaru
+    $this->db->order_by('sales.date', 'DESC'); // Mengurutkan berdasarkan tanggal (baru di atas)
     
-        $userId =  $this->post('user_id');
+    // Menambahkan limit
+    $this->db->limit(30); // Batasi hasil query (misalnya 5 data)
     
-        $this->db->where('user_id', $userId);
-        $trx = $this->db->get('tbl_transactions')->result();
-        
-        $this->response($trx, REST_Controller::HTTP_OK); 
+    // Eksekusi query
+    $result = $this->db->get()->result();
+    
+    // Mengirimkan respons dalam format JSON
+    $this->response($result, REST_Controller::HTTP_OK);    
     }
-
-  
 
 }
