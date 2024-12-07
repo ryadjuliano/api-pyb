@@ -31,7 +31,7 @@ class Transaction extends REST_Controller {
     
         // Step 2: Decode the JSON into an associative array
         $data = json_decode($rawPayload, true);
-        echo $datal;
+        echo $data;
 
 
         // if ($this->db->insert('sales', $data)) {
