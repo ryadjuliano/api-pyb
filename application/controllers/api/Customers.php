@@ -35,7 +35,7 @@ class Customers extends REST_Controller {
         
         if ($q->num_rows() > 0) {
             $result = [];
-            $no = 0;
+            $no = 1;
             foreach ($q->result() as $row) {
                 $result[] = [
                     'id' => $no++,
@@ -105,4 +105,33 @@ class Customers extends REST_Controller {
         
         $this->response($message, REST_Controller::HTTP_OK); 
     }
+
+    public function reference_get()
+    
+        {
+            $this->db->select('reference_no');
+            $this->db->order_by('id', 'DESC'); // Assuming 'id' is the primary key or an auto-increment field
+            $this->db->limit(1);
+            $q = $this->db->get('sim_sales');
+        
+            if ($q->num_rows() > 0) {
+                $row = $q->row(); // Fetch the single row
+                $lastReferenceNo = $row->reference_no; // Get the last reference number
+                $nextReferenceNo = $lastReferenceNo + 1; // Increment the last reference number by 1
+              
+                $message = [
+                    "data" => $nextReferenceNo,
+                    "success" => true
+                ];
+            } else {
+                $message = [
+                    "data" => [],
+                    "success" => false,
+                    "message" => "No records found."
+                ];
+            }
+            $this->response($message, REST_Controller::HTTP_OK); 
+            // return false;
+        }
+    
 }
