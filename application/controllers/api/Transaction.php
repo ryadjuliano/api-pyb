@@ -47,7 +47,6 @@ class Transaction extends REST_Controller {
                 'company_name' => 'Pick Your Ballon',
                 'date' => '',
                 'recurring' => '',
-                'expiry_date' => '',
                 'user' => '',
                 'user_id' => '',
                 'product_discount' => '',
