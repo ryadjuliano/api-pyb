@@ -33,7 +33,7 @@ class Transaction extends REST_Controller {
         $data = json_decode($rawPayload, true);
         // echo $data;
 
-
+        $customer = $data['customer'] ?? [];
         // if ($this->db->insert('sales', $data)) {
         //     $sale_id = $this->db->insert_id();
 
@@ -90,7 +90,7 @@ class Transaction extends REST_Controller {
         //     ];
         // }
         
-        $this->response($data, REST_Controller::HTTP_OK); 
+        $this->response($customer, REST_Controller::HTTP_OK); 
     }
 
     
