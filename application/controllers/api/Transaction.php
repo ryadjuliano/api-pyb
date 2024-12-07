@@ -72,59 +72,49 @@ class Transaction extends REST_Controller {
             ];
 
 
-            foreach ($products as $product) {
-                $itemData = [
-                    'sale_id' => 1,
-                    'product_name' => $product['name'],
-                    'quantity' => $product['quantity'],
-                    'price' => $product['price'],
-                    'total' => $product['total'],
-                ];
-                // $this->db->insert('sale_items', $itemData);
-            }
-
-            $message = [
-                "success" => true,
-                "message" => "Invoice created successfully.",
-                "sales" => $itemData,
-                "saleData" => $saleData
-            ];
-        }
 
             // Insert into `sales` table
-            // if ($this->db->insert('sales', $saleData)) {
-                // $saleId = $this->db->insert_id();
+            if ($this->db->insert('sales', $saleData)) {
+                $saleId = $this->db->insert_id();
     
-                // // Step 4: Insert products into `sale_items` table
-                // foreach ($products as $product) {
-                //     $itemData = [
-                //         'sale_id' => 1,
-                //         'product_name' => $product['name'],
-                //         'quantity' => $product['quantity'],
-                //         'price' => $product['price'],
-                //         'total' => $product['total'],
-                //     ];
-                //     // $this->db->insert('sale_items', $itemData);
-                // }
+                // Step 4: Insert products into `sale_items` table
+                foreach ($products as $product) {
+                    $itemData = [
+                        'sale_id' => $saleId,
+                        'product_name' => $product['name'],
+                        'quantity' => $product['quantity'],
+                        'price' => $product['price'],
+                        'net_unit_price' => $product['price'],
+                        'real_unit_price' => $product['price'],
+                        'subtotal' => $product['total'],
+                        'details' => '8',
+                        'tax_amt' => 0,
+                        'tax_rate_id' => 1,
+                        'tax' => 0.00,
+                        'discount' => 0,
+                        'tax_method' => 'exclusive',
+                    ];
+                    // $this->db->insert('sale_items', $itemData);
+                }
     
-                // $message = [
-                //     "success" => true,
-                //     "message" => "Invoice created successfully.",
-                //     "sales" => $itemData,
-                //     "saleData" => $saleData
-                // ];
-            // } else {
-            //     $message = [
-            //         "success" => false,
-            //         "message" => "Failed to create invoice.",
-            //     ];
-            // }
-        // } else {
-        //     $message = [
-        //         "success" => false,
-        //         "message" => "Invalid JSON payload.",
-        //     ];
-        // }
+                $message = [
+                    "success" => true,
+                    "message" => "Invoice created successfully.",
+                    "sales" => $itemData,
+                    "saleData" => $saleData
+                ];
+            } else {
+                $message = [
+                    "success" => false,
+                    "message" => "Failed to create invoice.",
+                ];
+            }
+        } else {
+            $message = [
+                "success" => false,
+                "message" => "Invalid JSON payload.",
+            ];
+        }
     
         // Step 5: Send response
         $this->response($message, REST_Controller::HTTP_OK); 
