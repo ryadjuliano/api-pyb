@@ -60,7 +60,7 @@ class Customers extends REST_Controller {
     public function filterlist_post() {
        
         $limit = $this->post('_limit') ?: 10; // Default to 10 items per page if not provided
-        $phone_number = $this->post('phone_number');
+        $phone_number = $this->post('phone');
         $name = $this->post('name');
     
     
