@@ -72,41 +72,59 @@ class Transaction extends REST_Controller {
             ];
 
 
-
-            // Insert into `sales` table
-            if ($this->db->insert('sales', $saleData)) {
-                $saleId = $this->db->insert_id();
-    
-                // Step 4: Insert products into `sale_items` table
-                foreach ($products as $product) {
-                    $itemData = [
-                        'sale_id' => 1,
-                        'product_name' => $product['name'],
-                        'quantity' => $product['quantity'],
-                        'price' => $product['price'],
-                        'total' => $product['total'],
-                    ];
-                    // $this->db->insert('sale_items', $itemData);
-                }
-    
-                $message = [
-                    "success" => true,
-                    "message" => "Invoice created successfully.",
-                    "sales" => $itemData,
-                    "saleData" => $saleData
+            foreach ($products as $product) {
+                $itemData = [
+                    'sale_id' => 1,
+                    'product_name' => $product['name'],
+                    'quantity' => $product['quantity'],
+                    'price' => $product['price'],
+                    'total' => $product['total'],
                 ];
-            } else {
-                $message = [
-                    "success" => false,
-                    "message" => "Failed to create invoice.",
-                ];
+                // $this->db->insert('sale_items', $itemData);
             }
-        } else {
+
             $message = [
-                "success" => false,
-                "message" => "Invalid JSON payload.",
+                "success" => true,
+                "message" => "Invoice created successfully.",
+                "sales" => $itemData,
+                "saleData" => $saleData
             ];
         }
+
+            // Insert into `sales` table
+            // if ($this->db->insert('sales', $saleData)) {
+                // $saleId = $this->db->insert_id();
+    
+                // // Step 4: Insert products into `sale_items` table
+                // foreach ($products as $product) {
+                //     $itemData = [
+                //         'sale_id' => 1,
+                //         'product_name' => $product['name'],
+                //         'quantity' => $product['quantity'],
+                //         'price' => $product['price'],
+                //         'total' => $product['total'],
+                //     ];
+                //     // $this->db->insert('sale_items', $itemData);
+                // }
+    
+                // $message = [
+                //     "success" => true,
+                //     "message" => "Invoice created successfully.",
+                //     "sales" => $itemData,
+                //     "saleData" => $saleData
+                // ];
+            // } else {
+            //     $message = [
+            //         "success" => false,
+            //         "message" => "Failed to create invoice.",
+            //     ];
+            // }
+        // } else {
+        //     $message = [
+        //         "success" => false,
+        //         "message" => "Invalid JSON payload.",
+        //     ];
+        // }
     
         // Step 5: Send response
         $this->response($message, REST_Controller::HTTP_OK); 
