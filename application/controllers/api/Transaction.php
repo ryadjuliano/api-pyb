@@ -32,65 +32,84 @@ class Transaction extends REST_Controller {
         // Step 2: Decode the JSON into an associative array
         $data = json_decode($rawPayload, true);
         // echo $data;
+        if ($data) {
+            // Step 3: Extract and map fields from the payload
+            $customer = $data['customer'] ?? [];
+            $invoiceDetails = $data['invoiceDetails'] ?? [];
+            $products = $data['products'] ?? [];
+            $totals = $data['totals'] ?? [];
+            $status = $data['status'] ?? '';
+    
+            // Prepare data for insertion into `sales` table
+            $saleData = [
+                'reference_no' => '',
+                'company_id' => '1',
+                'company_name' => 'Pick Your Ballon',
+                'date' => '',
+                'recurring' => '',
+                'expiry_date' => '',
+                'user' => '',
+                'user_id' => '',
+                'product_discount' => '',
+                'product_tax' => '',
+                'order_tax_id' => '',
+                'order_tax' => '',
+                'shipping' => '',
+                'note' => '',
+                'total_tax' => '',
+                'total_tax' => '',
+                'customer_id' => '',
+                'customer_name' => $customer['name'],
+                'customer_address' => $customer['address'],
+                'invoice_number' => $invoiceDetails['invoiceNumber'],
+                'due_date' => $invoiceDetails['dueDate'],
+                'shipment' => $invoiceDetails['deliveryTime'],
+                'invoice_date' => $invoiceDetails['invoiceDate'],
+                'total' => $totals['subtotal'],
+                'tax' => $totals['tax'],
+                'grand_total' => $totals['grandTotal'],
+                'status' => 'pending',
+            ];
 
-        $customer = $data['customer'] ?? [];
-        // if ($this->db->insert('sales', $data)) {
-        //     $sale_id = $this->db->insert_id();
 
-        //     foreach ($items as $item) {
-        //         $item['sale_id'] = $sale_id;
-        //         $this->db->insert('sale_items', $item);
-        //     }
 
-        //     if ($data['status'] == $this->lang->line('paid') || $data['status'] == 'paid') {
-        //         $adata = [
-        //             'date'        => $data['date'],
-        //             'invoice_id'  => $sale_id,
-        //             'customer_id' => $data['customer_id'],
-        //             'amount'      => ($data['total'] + $data['shipping']),
-        //             'note'        => $this->lang->line('paid_nett'),
-        //             'user'        => $this->session->userdata('user_id')
-        //         ];
-        //         $this->db->insert('payment', $adata);
-        //         $this->db->update('sales', ['paid' => ($data['total'] + $data['shipping'])], ['id' => $sale_id]);
-        //     }
-
-        //     return true;
-        // }
-
-        // return false;
-        // $this->db->select('sim_customers.address, sim_customers.cf1, sim_customers.phone, sim_customers.name, sim_customers_details.lokasi');
-        // $this->db->from('sim_customers');
-        // $this->db->join('sim_customers_details', 'sim_customers.phone = sim_customers_details.phone'); // Adjust column names for joining
-        // // $this->db->limit(10); 
-        // $this->db->group_by(['sim_customers.phone', 'sim_customers.name']);
-        // $q = $this->db->get();
-        
-        // if ($q->num_rows() > 0) {
-        //     $result = [];
-        //     $no = 1;
-        //     foreach ($q->result() as $row) {
-        //         $result[] = [
-        //             'id' => $no++,
-        //             'name' => $row->name,
-        //             'phone' => $row->phone,
-        //             'addresses' => [$row->lokasi, $row->address]
-        //         ];
-        //     }
-
-        //     $message = [
-        //         "data" => $result,
-        //         "success" => true
-        //     ];
-        // } else {
-        //     $message = [
-        //         "data" => [],
-        //         "success" => false,
-        //         "message" => "No records found."
-        //     ];
-        // }
-        
-        $this->response($customer, REST_Controller::HTTP_OK); 
+            // Insert into `sales` table
+            if ($this->db->insert('sales', $saleData)) {
+                $saleId = $this->db->insert_id();
+    
+                // Step 4: Insert products into `sale_items` table
+                foreach ($products as $product) {
+                    $itemData = [
+                        'sale_id' => 1,
+                        'product_name' => $product['name'],
+                        'quantity' => $product['quantity'],
+                        'price' => $product['price'],
+                        'total' => $product['total'],
+                    ];
+                    // $this->db->insert('sale_items', $itemData);
+                }
+    
+                $message = [
+                    "success" => true,
+                    "message" => "Invoice created successfully.",
+                    "sales" => $itemData,
+                    "saleData" => $saleData
+                ];
+            } else {
+                $message = [
+                    "success" => false,
+                    "message" => "Failed to create invoice.",
+                ];
+            }
+        } else {
+            $message = [
+                "success" => false,
+                "message" => "Invalid JSON payload.",
+            ];
+        }
+    
+        // Step 5: Send response
+        $this->response($message, REST_Controller::HTTP_OK); 
     }
 
     
