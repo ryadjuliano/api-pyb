@@ -29,7 +29,7 @@ class Customers extends REST_Controller {
         $this->db->select('sim_customers.address, sim_customers.cf1, sim_customers_details.phone, sim_customers_details.name, sim_customers_details.lokasi');
         $this->db->from('sim_customers');
         $this->db->join('sim_customers_details', 'sim_customers.phone = sim_customers_details.phone'); // Adjust column names for joining
-        $this->db->limit(10); 
+        // $this->db->limit(10); 
         $q = $this->db->get();
         
         if ($q->num_rows() > 0) {
