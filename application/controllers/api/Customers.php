@@ -34,8 +34,10 @@ class Customers extends REST_Controller {
         
         if ($q->num_rows() > 0) {
             $result = [];
+            $no = 0;
             foreach ($q->result() as $row) {
                 $result[] = [
+                    'id' => $no+1,
                     'name' => $row->name,
                     'phone' => $row->phone,
                     'addresses' => [$row->lokasi, $row->address]
