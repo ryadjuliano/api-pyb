@@ -60,7 +60,7 @@ class Transaction extends REST_Controller {
                 'customer_id' => '',
                 'customer_name' => $customer['name'],
                 // 'customer_address' => $customer['address'],
-                'invoice_number' => $invoiceDetails['invoiceNumber'],
+                'reference_no' => $invoiceDetails['invoiceNumber'],
                 'due_date' => $invoiceDetails['dueDate'],
                 'shipment' => $invoiceDetails['deliveryTime'],
                 'invoice_date' => $invoiceDetails['invoiceDate'],
