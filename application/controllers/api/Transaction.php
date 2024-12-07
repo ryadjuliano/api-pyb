@@ -59,7 +59,7 @@ class Transaction extends REST_Controller {
                 'total_tax' => '',
                 'customer_id' => '',
                 'customer_name' => $customer['name'],
-                'customer_address' => $customer['address'],
+                // 'customer_address' => $customer['address'],
                 'invoice_number' => $invoiceDetails['invoiceNumber'],
                 'due_date' => $invoiceDetails['dueDate'],
                 'shipment' => $invoiceDetails['deliveryTime'],
