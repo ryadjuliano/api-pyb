@@ -74,7 +74,7 @@ class Transaction extends REST_Controller {
 
 
             // Insert into `sales` table
-            if ($this->db->insert('sales', $saleData)) {
+            if ($this->db->insert('sim_sales', $saleData)) {
                 $saleId = $this->db->insert_id();
     
                 // Step 4: Insert products into `sale_items` table
@@ -94,7 +94,7 @@ class Transaction extends REST_Controller {
                         'discount' => 0,
                         'tax_method' => 'exclusive',
                     ];
-                    // $this->db->insert('sale_items', $itemData);
+                    $this->db->insert('sim_sale_items', $itemData);
                 }
     
                 $message = [
