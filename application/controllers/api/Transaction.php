@@ -63,7 +63,7 @@ class Transaction extends REST_Controller {
                 'reference_no' => $invoiceDetails['invoiceNumber'],
                 'due_date' => $invoiceDetails['dueDate'],
                 'shipment' => $invoiceDetails['deliveryTime'],
-                'invoice_date' => $invoiceDetails['invoiceDate'],
+                // 'invoice_date' => $invoiceDetails['invoiceDate'],
                 'total' => $totals['subtotal'],
                 'tax' => $totals['tax'],
                 'grand_total' => $totals['grandTotal'],
