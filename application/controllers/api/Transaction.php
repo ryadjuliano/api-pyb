@@ -55,8 +55,6 @@ class Transaction extends REST_Controller {
                 'order_tax' => '',
                 'shipping' => '',
                 'note' => '',
-                'total_tax' => '',
-                'total_tax' => '',
                 'customer_id' => '',
                 'customer_name' => $customer['name'],
                 // 'customer_address' => $customer['address'],
@@ -65,7 +63,7 @@ class Transaction extends REST_Controller {
                 'shipment' => $invoiceDetails['deliveryTime'],
                 // 'invoice_date' => $invoiceDetails['invoiceDate'],
                 'total' => $totals['subtotal'],
-                'tax' => $totals['tax'],
+                'total_tax' => $totals['tax'],
                 'grand_total' => $totals['grandTotal'],
                 'status' => 'pending',
             ];
