@@ -26,7 +26,7 @@ class Customers extends REST_Controller {
 
     public function list_get()
     {
-        $this->db->select('sim_customers.address, sim_customers.cf1, sim_customers.phone, sim_customers.name, sim_customers_details.lokasi');
+        $this->db->select('sim_customers.address, sim_customers.cf1, sim_customers.phone, sim_customers.name, sim_customers_details.lokasi, sim_customers.id');
         $this->db->from('sim_customers');
         $this->db->join('sim_customers_details', 'sim_customers.phone = sim_customers_details.phone'); // Adjust column names for joining
         // $this->db->limit(10); 
@@ -38,7 +38,7 @@ class Customers extends REST_Controller {
             $no = 1;
             foreach ($q->result() as $row) {
                 $result[] = [
-                    'id' => $no++,
+                    'id' => $row->id,
                     'name' => $row->name,
                     'phone' => $row->phone,
                     'addresses' => [$row->lokasi, $row->address]

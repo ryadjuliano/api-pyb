@@ -101,7 +101,7 @@ class Transaction extends REST_Controller {
                 'order_tax' => '',
                 'shipping' => '',
                 'note' => '',
-                'customer_id' => '',
+                'customer_id' =>  $customer['id'],
                 'customer_name' => $customer['name'],
                 // 'customer_address' => $customer['address'],
                 'reference_no' => $invoiceDetails['invoiceNumber'],
