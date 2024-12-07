@@ -80,7 +80,7 @@ class Transaction extends REST_Controller {
                         'sale_id' => $saleId,
                         'product_name' => $product['name'],
                         'quantity' => $product['quantity'],
-                        'price' => $product['price'],
+                        'unit_price' => $product['price'],
                         'net_unit_price' => $product['price'],
                         'real_unit_price' => $product['price'],
                         'subtotal' => $product['total'],
