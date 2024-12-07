@@ -30,6 +30,7 @@ class Customers extends REST_Controller {
         $this->db->from('sim_customers');
         $this->db->join('sim_customers_details', 'sim_customers.phone = sim_customers_details.phone'); // Adjust column names for joining
         // $this->db->limit(10); 
+        $this->db->group_by(['sim_customers.phone', 'sim_customers.name']);
         $q = $this->db->get();
         
         if ($q->num_rows() > 0) {
@@ -37,7 +38,7 @@ class Customers extends REST_Controller {
             $no = 0;
             foreach ($q->result() as $row) {
                 $result[] = [
-                    'id' => $no+1,
+                    'id' => $no++,
                     'name' => $row->name,
                     'phone' => $row->phone,
                     'addresses' => [$row->lokasi, $row->address]
