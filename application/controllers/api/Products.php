@@ -9,7 +9,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 // use namespace
 use Restserver\Libraries\REST_Controller;
 
-class Customers extends REST_Controller {
+class Products extends REST_Controller {
 
     function __construct()
     {
