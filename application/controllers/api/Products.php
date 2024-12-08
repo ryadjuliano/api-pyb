@@ -28,6 +28,7 @@ class Products extends REST_Controller {
     {
         $this->db->select('sim_products.*');
         $this->db->from('sim_products');
+        $this->db->order_by('id', 'DESC');
         $q = $this->db->get();
         
         if ($q->num_rows() > 0) {
