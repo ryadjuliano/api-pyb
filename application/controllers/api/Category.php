@@ -46,22 +46,47 @@ class Category extends REST_Controller {
         $this->response($message, REST_Controller::HTTP_OK); 
         
     }
-
     public function listGroup_get()
     {
-        $this->db->select('sim_group_category.name as groupName,sim_group_category.id as groupId, sim_stock_item.*');
+        $this->db->select('sim_group_category.name as groupName, sim_group_category.id as groupId, sim_stock_item.id, sim_stock_item.productName, sim_stock_item.quantity, sim_stock_item.note, sim_stock_item.imageUrl');
         $this->db->from('sim_group_category');
         $this->db->join('sim_stock_item', 'sim_group_category.id = sim_stock_item.category'); // Adjust column names for joining
-        // $this->db->limit($limit); 
         $q = $this->db->get()->result();
-
-        $message = array(
-            "data" => $q,
-            "succes" => true
-            );
-        $this->response($message, REST_Controller::HTTP_OK); 
-        
+    
+        // Group data by groupName
+        $groupedData = [];
+        foreach ($q as $item) {
+            $groupId = $item->groupId;
+            if (!isset($groupedData[$groupId])) {
+                $groupedData[$groupId] = [
+                    'groupName' => $item->groupName,
+                    'id' => $groupId,
+                    'items' => []
+                ];
+            }
+            $groupedData[$groupId]['items'][] = [
+                'id' => $item->id,
+                'productName' => $item->nama,
+                'quantity' => $item->quantity,
+                'warna' => $item->warna,
+                'ukuran' => $item->ukuran,
+                'alert_quantity' => $item->alert_quantity,
+                'note' => $item->note,
+                'imageUrl' => $item->image
+            ];
+        }
+    
+        // Re-index grouped data
+        $groupedData = array_values($groupedData);
+    
+        // Response message
+        $message = [
+            "data" => $groupedData,
+            "success" => true
+        ];
+        $this->response($message, REST_Controller::HTTP_OK);
     }
+    
     
 
    
