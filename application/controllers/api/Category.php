@@ -46,6 +46,22 @@ class Category extends REST_Controller {
         $this->response($message, REST_Controller::HTTP_OK); 
         
     }
+
+    public function listGroup_get()
+    {
+        $this->db->select('sim_group_category.name,sim_group_category.id, sim_stock_item.*');
+        $this->db->from('sim_customers');
+        $this->db->join('sim_group_category', 'sim_group_category.id = sim_stock_item.category'); // Adjust column names for joining
+        // $this->db->limit($limit); 
+        $q = $this->db->get();
+        
+        $message = array(
+            "data" => $q,
+            "succes" => true
+            );
+        $this->response($message, REST_Controller::HTTP_OK); 
+        
+    }
     
 
    
