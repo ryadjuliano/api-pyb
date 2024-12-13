@@ -71,7 +71,7 @@ class Category extends REST_Controller {
                 'warna' => $item->warna,
                 'ukuran' => $item->ukuran,
                 'alert_quantity' => $item->alert_quantity,
-                'note' => $item->note,
+                'note' => $item->notes,
                 'imageUrl' => $item->image
             ];
         }
